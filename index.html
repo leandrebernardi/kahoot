@@ -5,14 +5,28 @@
 			#Question {
 				text-align: center;
 			}
+			
+			#grille-questions {
+				display:grid;
+				grid-template-columns: 1fr 1fr;
+				height:400px;
+				gap:10px;
+			}
+
+			#R1 { background: red; }
+			#R2 { background: blue; }
+			#R3 { background: yellow; }
+			#R4 { background: green; }
 		</style>
 	</head>
 	<body>
 		<h1 id="Question">Welcome press space to start</h1>
-		<button id="R1" onclick="MettreRC1()"></button>
-		<button id="R2" onclick="MettreRC2()"></button><br>
-		<button id="R3" onclick="MettreRC3()"></button>
-		<button id="R4" onclick="MettreRC4()"></button>
+		<div id="grille-questions">
+			<button id="R1" onclick="MettreRC1()"></button>
+			<button id="R2" onclick="MettreRC2()"></button><br>
+			<button id="R3" onclick="MettreRC3()"></button>
+			<button id="R4" onclick="MettreRC4()"></button>
+		</div>
 		<script>
 			console.log("HERE");
 			let RChoisie = "";
