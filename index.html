@@ -13,19 +13,29 @@
 				display:none;
 			}
 
-			#R1 { background: red; }
-			#R2 { background: blue; }
-			#R3 { background: yellow; }
-			#R4 { background: green; }
+			#R1 { background: red; border-radius: 25px; }
+			#R2 { background: blue; border-radius: 25px; }
+			#R3 { background: yellow; border-radius: 25px;}
+			#R4 { background: green; border-radius: 25px;}
+			
+			#resultats{
+				display:none;
+			}
 		</style>
 	</head>
 	<body>
-		<h1 id="Question">Welcome press space to start</h1>
-		<div id="grille-questions">
-			<button id="R1" onclick="MettreRC1()"></button>
-			<button id="R2" onclick="MettreRC2()"></button>
-			<button id="R3" onclick="MettreRC3()"></button>
-			<button id="R4" onclick="MettreRC4()"></button>
+		<div id="QuestionsReponses">
+			<h1 id="Question">Welcome press space to start</h1>
+			<div id="grille-questions">
+				<button id="R1" onclick="MettreRC1()"></button>
+				<button id="R2" onclick="MettreRC2()"></button>
+				<button id="R3" onclick="MettreRC3()"></button>
+				<button id="R4" onclick="MettreRC4()"></button>
+			</div>
+		</div>
+		<div id="resultats">
+			<p id="gagne"></p>
+			<button id="nextQuestion" onclik="resultsToQuestions()">Go To Next Question</button>
 		</div>
 		<script>
 			var questions = [
@@ -37,6 +47,14 @@
 			let RChoisie = "";
 			let BonneReponse = "";
 			let Score = 0;
+			let gagne = document.getElementById("gagne");
+			let QuestionsReponses = document.getElementById("QuestionsReponses");
+			
+			function resultatQuestion(TEXT){
+				document.getElementById("resultats").style.display="block";
+				document.getElementById("resultats").textContent=TEXT;
+				QuestionsReponses.style.display="none";
+				}
 			function MettreRC1(){
 				RChoisie = "R1";
 				VerifyReponse();
@@ -56,10 +74,10 @@
 			document.addEventListener("keydown", SpaceBar);
 			function VerifyReponse(){
 				if (RChoisie == BonneReponse){
-					alert("Bravo! C'est la bonne reponse!");
+					resultatQuestion("Bravo! C'est la bonne reponse!");
 					Score += 1;
 				}else{
-					alert("Non!C'est la mauvaise reponse!");
+					resultatQuestion("Non. C'est la mauvaise reponse.");
 				}
 				NQuestion += 1;
 				NextQuestion();
@@ -89,7 +107,7 @@
 
 				const R4 = document.getElementById("R4");
 				R4.innerHTML = reponse4;
-				if (NQuestion == 3){
+				if (NQuestion == 4){
 					alert(Score);
 				}
 				
@@ -97,17 +115,22 @@
 			let NQuestion = -1;
 
 			let GrilleQuestions = document.getElementById("grille-questions");
-			console.log(document.getElementById("grille-questions").style.display);
 
 			function DisplyChange(){
 				if (NQuestion >= 0){
 						GrilleQuestions.style.display = "grid";
 				}
 			}
-
+			
+			function resultsToQuestions(){
+				document.getElementById("resultats").style.display="none";
+				QuestionsReponses.style.display="grid";
+			}
+			
 			function SpaceBar(e){
 				if (e.key === " " || e.key === "Spacebar"){
 					if (NQuestion >= 0){
+					resultsToQuestions();
 					return;
 					}
 					NQuestion += 1;
