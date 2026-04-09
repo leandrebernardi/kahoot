@@ -8,7 +8,13 @@
 				text-align: center;
 				border:1px double black;
 			}
-
+			
+			#nextQuestion:hover {
+				box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+				transform: translateY(-2px);
+				cursor: pointer;
+			}
+			
 			#Question img {
 			    width: 50px;
 			    height: auto;
@@ -119,7 +125,17 @@
 				NQuestion += 1;
 				NextQuestion();
 			}
+			function lastQuestion(){
+			let nombreDeQuestions = questions.length;
+			let pourcentageTotal = (Score/nombreDeQuestions)*100;
+			resultatQuestion(`Tu as fini ! Ton score total est de ${Score} sur ${nombreDeQuestions} ou ${pourcentageTotal}%`);
+			document.getElementById("nextQuestion").style.display="none";
+			}
 			function NextQuestion(){
+				if (NQuestion ==  questions.length){
+					lastQuestion();
+					return;
+				}
 				let questionText = (questions[NQuestion]).Q;
 				let reponse1 = (questions[NQuestion]).reponse[0];
 				let reponse2 = (questions[NQuestion]).reponse[1];
@@ -144,9 +160,7 @@
 
 				const R4 = document.getElementById("R4");
 				R4.innerHTML = reponse4;
-				if (NQuestion == 4){
-					alert(Score);
-				}
+				
 				
 			}
 			let NQuestion = -1;
@@ -179,4 +193,4 @@
 			
 		</script>
 	</body>
-</html> 
+</html>
