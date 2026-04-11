@@ -53,8 +53,32 @@
 			#R3 { background: yellow; border-radius: 25px;}
 			#R4 { background: green; border-radius: 25px;}
 			
-			#resultats{
-				display:none;
+			#resultats {
+			    display: none; 
+			    position: absolute;
+			    top: 50%;
+			    left: 50%;
+			    transform: translate(-50%, -50%); /* Centrage parfait */
+			    
+			    background: white;
+			    padding: 40px;
+			    border-radius: 20px;
+			    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+			    text-align: center;
+			    min-width: 300px;
+			    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			    border: 3px solid #4CAF50;
+			}
+			
+			#gagne {
+			    font-size: 20px;
+			    line-height: 1.6;
+			    color: #333;
+			}
+			
+			#gagne b {
+			    color: #4CAF50;
+			    font-size: 28px;
 			}
 		</style>
 	</head>
@@ -128,7 +152,14 @@
 			function lastQuestion(){
 			let nombreDeQuestions = questions.length;
 			let pourcentageTotal = (Score/nombreDeQuestions)*100;
-			resultatQuestion(`Tu as fini ! Ton score total est de ${Score} sur ${nombreDeQuestions} ou ${pourcentageTotal}%`);
+			let message = pourcentageTotal >= 80 ? "Excellent ! 🍁" : "Bien joué !";
+			gagne.innerHTML = `
+		        <div style="font-size: 50px;">🏆</div>
+		        <h2>${message}</h2>
+		        <p>Ton score est de :<br>
+		        <b>${Score} / ${nombreDeQuestions}</b></p>
+		        <div style="color: #888;">(${pourcentageTotal}%)</div>
+		    `;
 			document.getElementById("nextQuestion").style.display="none";
 			}
 			function NextQuestion(){
