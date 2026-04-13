@@ -94,6 +94,9 @@
 			</div>
 			<br>
 			<div id="grille-questions">
+				<div id="timer-container">
+					<span id="timer">15</span>s
+				</div>
 				<button id="R1" onclick="MettreRC1()"></button>
 				<button id="R2" onclick="MettreRC2()"></button>
 				<button id="R3" onclick="MettreRC3()"></button>
@@ -112,11 +115,16 @@
 				{"Q":"Q4","reponse":["R1", "R2", "R3", "R4","R1"]}
 			]
 			let RChoisie = "";
+			let tempsRestant="";
 			let BonneReponse = "";
 			let Score = 0;
 			let gagne = document.getElementById("gagne");
 			let QuestionsReponses = document.getElementById("QuestionsReponses");
 			
+			function timer(){
+				let timer=document.getElementById("timer");
+				timer.textContent=tempsRestant-1;
+			}
 			function resultatQuestion(TEXT){
 				document.getElementById("resultats").style.display="block";
 				gagne.textContent=TEXT;
@@ -163,10 +171,14 @@
 			document.getElementById("nextQuestion").style.display="none";
 			}
 			function NextQuestion(){
+				try{
+					clearInterval(timer)
+				}
 				if (NQuestion ==  questions.length){
 					lastQuestion();
 					return;
 				}
+				let timer = setInterval(timer, 1000)
 				let questionText = (questions[NQuestion]).Q;
 				let reponse1 = (questions[NQuestion]).reponse[0];
 				let reponse2 = (questions[NQuestion]).reponse[1];
