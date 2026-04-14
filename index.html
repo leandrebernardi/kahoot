@@ -109,13 +109,13 @@
 		</div>
 		<script>
 			var questions = [
-				{"Q":"Q1","reponse":["R1", "R2", "R3", "R4","R1"]},
-				{"Q":"Q2","reponse":["R1", "R2", "R3", "R4","R1"]},
-				{"Q":"Q3","reponse":["R1", "R2", "R3", "R4","R1"]},
-				{"Q":"Q4","reponse":["R1", "R2", "R3", "R4","R1"]}
+				{"Q":"Q1","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"},
+				{"Q":"Q2","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"},
+				{"Q":"Q3","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"},
+				{"Q":"Q4","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"}
 			]
 			let RChoisie = "";
-			let tempsRestant="";
+			let tempsRestant="0";
 			let BonneReponse = "";
 			let Score = 0;
 			let gagne = document.getElementById("gagne");
@@ -172,12 +172,6 @@
 			document.getElementById("nextQuestion").style.display="none";
 			}
 			function NextQuestion(){
-				try{
-					clearInterval(timerInterval)
-				}
-				catch{
-					console.log("timer arrété");
-				}
 				if (NQuestion == questions.length){
 					lastQuestion();
 					return;
@@ -188,7 +182,8 @@
 				let reponse2 = (questions[NQuestion]).reponse[1];
 				let reponse3 = (questions[NQuestion]).reponse[2];
 				let reponse4 = (questions[NQuestion]).reponse[3];
-				BonneReponse = (questions[NQuestion]).reponse[4];;
+				tempsRestant = (questions[NQuestion]).reponse[3];
+				BonneReponse = (questions[NQuestion]).temps;
 
 				DisplyChange();
 				
