@@ -1,232 +1,203 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Qwizit</title>
-		<link rel="icon" type="image/png" href="logoQwizit.png">
-		<style>
-			#Question {
-				text-align: center;
-				border:1px double black;
-			}
-			
-			#nextQuestion:hover {
-				box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-				transform: translateY(-2px);
-				cursor: pointer;
-			}
-			
-			#Question img {
-				width: 50px;
-				height: auto;
-				margin: 10px;
-			}
-			
-			#grille-questions {
-				grid-template-columns: 1fr 1fr;
-				height:400px;
-				gap:10px;
-				display:none;
-			}
-			#R1:hover {
-				box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-				transform: translateY(-2px);
-				cursor: pointer;
-			}
-			#R2:hover {
-				box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-				transform: translateY(-2px);
-				cursor: pointer;
-			}
-			#R3:hover {
-				box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-				transform: translateY(-2px);
-				cursor: pointer;
-			}
-			#R4:hover {
-				box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-				transform: translateY(-2px);
-				cursor: pointer;
-			}
+<head>
+    <title>Qwizit</title>
+    <link rel="icon" type="image/png" href="logoQwizit.png">
+    <style>
+        #Question {
+            text-align: center;
+            border:1px double black;
+        }
+        #nextQuestion:hover {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+            cursor: pointer;
+        }
+        #Question img {
+            width: 50px;
+            height: auto;
+            margin: 10px;
+        }
+        #grille-questions {
+            grid-template-columns: 1fr 1fr;
+            height:400px;
+            gap:10px;
+            display:none;
+        }
+        #R1:hover, #R2:hover, #R3:hover, #R4:hover {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+            cursor: pointer;
+        }
+        #R1 { background: red; border-radius: 25px; }
+        #R2 { background: blue; border-radius: 25px; }
+        #R3 { background: yellow; border-radius: 25px;}
+        #R4 { background: green; border-radius: 25px;}
+        #resultats {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+            min-width: 300px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border: 3px solid #4CAF50;
+        }
+        #gagne {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        #gagne b {
+            color: #4CAF50;
+            font-size: 28px;
+        }
+    </style>
+</head>
+<body>
+    <div id="QuestionsReponses">
+        <div id="Question">
+            <img src="logoQwizit.png" alt="Logo Qwizit">
+            <h1>Welcome to Qwizit</h1>
+            <img src="logoQwizit.png" alt="Logo Qwizit">
+            <br>
+            <p>Press space to start.</p>
+        </div>
+        <br>
+        <div id="grille-questions">
+            <div id="timer-container">
+                <span id="timer">15</span>s
+            </div>
+            <button id="R1" onclick="MettreRC1()"></button>
+            <button id="R2" onclick="MettreRC2()"></button>
+            <button id="R3" onclick="MettreRC3()"></button>
+            <button id="R4" onclick="MettreRC4()"></button>
+        </div>
+    </div>
+    <div id="resultats">
+        <p id="gagne"></p>
+        <button id="nextQuestion" onclick="resultsToQuestions()">Go To Next Question</button>
+    </div>
 
-			#R1 { background: red; border-radius: 25px; }
-			#R2 { background: blue; border-radius: 25px; }
-			#R3 { background: yellow; border-radius: 25px;}
-			#R4 { background: green; border-radius: 25px;}
-			
-			#resultats {
-				display: none;
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%); /* Centrage parfait */
-				
-				background: white;
-				padding: 40px;
-				border-radius: 20px;
-				box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-				text-align: center;
-				min-width: 300px;
-				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-				border: 3px solid #4CAF50;
-			}
-			
-			#gagne {
-				font-size: 20px;
-				line-height: 1.6;
-				color: #333;
-			}
-			
-			#gagne b {
-				color: #4CAF50;
-				font-size: 28px;
-			}
-		</style>
-	</head>
-	
-	<body>
-		<div id="QuestionsReponses">
-			<div id="Question">
-				<img src="logoQwizit.png" alt="Logo Qwizit">
-				<h1>Welcome to Qwizit</h1>
-				<img src="logoQwizit.png" alt="Logo Qwizit">
-				<br>
-				<p>Press space to start.</p>
-			</div>
-			<br>
-			<div id="grille-questions">
-				<div id="timer-container">
-					<span id="timer">15</span>s
-				</div>
-				<button id="R1" onclick="MettreRC1()"></button>
-				<button id="R2" onclick="MettreRC2()"></button>
-				<button id="R3" onclick="MettreRC3()"></button>
-				<button id="R4" onclick="MettreRC4()"></button>
-			</div>
-		</div>
-		<div id="resultats">
-			<p id="gagne"></p>
-			<button id="nextQuestion" onclick="resultsToQuestions()">Go To Next Question</button>
-		</div>
-		<script>
-			var questions = [
-				{"Q":"Q1","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"},
-				{"Q":"Q2","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"},
-				{"Q":"Q3","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"},
-				{"Q":"Q4","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"}
-			]
-			let RChoisie = "";
-			let tempsRestant= 0;
-			let BonneReponse = "";
-			let Score = 0;
-			let gagne = document.getElementById("gagne");
-			let QuestionsReponses = document.getElementById("QuestionsReponses");
-			let timerInterval; // NOUVEAU : pour stocker le chrono
+    <script>
+        var questions = [
+            {"Q":"Q1","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"},
+            {"Q":"Q2","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"},
+            {"Q":"Q3","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"},
+            {"Q":"Q4","reponse":["R1", "R2", "R3", "R4","R1"],"temps":"15"}
+        ];
 
-			function timer(){
-				let timerElement = document.getElementById("timer");
-				tempsRestant = tempsRestant - 1;
-				timerElement.textContent = tempsRestant;
-				
-				if(tempsRestant <= 0){
-					clearInterval(timerInterval);
-					resultatQuestion("Temps écoulé !");
-					NQuestion += 1;
-				}
-			}
+        let RChoisie = "";
+        let tempsRestant = 0;
+        let BonneReponse = "";
+        let Score = 0;
+        let gagne = document.getElementById("gagne");
+        let QuestionsReponses = document.getElementById("QuestionsReponses");
+        let timerInterval;
 
-			function resultatQuestion(TEXT){
-				clearInterval(timerInterval); // ARRÊT du timer quand on affiche le résultat
-				document.getElementById("resultats").style.display="block";
-				gagne.textContent=TEXT;
-				QuestionsReponses.style.display="none";
-			}
+        function timer() {
+            let timerElement = document.getElementById("timer");
+            tempsRestant = tempsRestant - 1;
+            timerElement.textContent = tempsRestant;
+            if (tempsRestant <= 0) {
+                clearInterval(timerInterval);
+                resultatQuestion("Temps écoulé !");
+                NQuestion += 1;
+            }
+        }
 
-			function MettreRC1(){ RChoisie = "R1"; VerifyReponse(); }
-			function MettreRC2(){ RChoisie = "R2"; VerifyReponse(); }
-			function MettreRC3(){ RChoisie = "R3"; VerifyReponse(); }	
-			function MettreRC4(){ RChoisie = "R4"; VerifyReponse(); }
+        function resultatQuestion(TEXT) {
+            clearInterval(timerInterval);
+            document.getElementById("resultats").style.display="block";
+            gagne.textContent = TEXT;
+            QuestionsReponses.style.display="none";
+        }
 
-			document.addEventListener("keydown", SpaceBar);
+        function MettreRC1() { RChoisie = "R1"; VerifyReponse(); }
+        function MettreRC2() { RChoisie = "R2"; VerifyReponse(); }
+        function MettreRC3() { RChoisie = "R3"; VerifyReponse(); }
+        function MettreRC4() { RChoisie = "R4"; VerifyReponse(); }
 
-			function VerifyReponse(){
-				if (RChoisie == BonneReponse){
-					resultatQuestion("Bravo! C'est la bonne reponse!");
-					Score += 1;
-				}else{
-					resultatQuestion("Non. C'est la mauvaise reponse.");
-				}
-				NQuestion += 1;
-			}
+        document.addEventListener("keydown", SpaceBar);
 
-			function lastQuestion(){
-				let nombreDeQuestions = questions.length;
-				let pourcentageTotal = (Score/nombreDeQuestions)*100;
-				let message = pourcentageTotal >= 80 ? "Excellent ! 🍁" : "Bien joué !";
-				gagne.innerHTML = `
-					<div style="font-size: 50px;">🏆</div>
-					<h2>${message}</h2>
-					<p>Ton score est de :<br>
-					<b>${Score} / ${nombreDeQuestions}</b></p>
-					<div style="color: #888;">(${pourcentageTotal}%)</div>
-				`;
-				document.getElementById("nextQuestion").style.display="none";
-			}
+        function VerifyReponse() {
+            if (RChoisie == BonneReponse) {
+                resultatQuestion("Bravo! C'est la bonne reponse!");
+                Score += 1;
+            } else {
+                resultatQuestion("Non. C'est la mauvaise reponse.");
+            }
+            NQuestion += 1;
+        }
 
-			function NextQuestion(){
-				if (NQuestion == questions.length){
-					lastQuestion();
-					return;
-				}
-				
-				// RESET du timer à chaque nouvelle question
-				clearInterval(timerInterval); 
-				tempsRestant = parseInt(questions[NQuestion].temps);
-				document.getElementById("timer").textContent = tempsRestant;
-				timerInterval = setInterval(timer, 1000);
+        function lastQuestion() {
+            let nombreDeQuestions = questions.length;
+            let pourcentageTotal = (Score/nombreDeQuestions)*100;
+            let message = pourcentageTotal >= 80 ? "Excellent ! 🍁" : "Bien joué !";
+            gagne.innerHTML = `
+                <div style="font-size: 50px;">🏆</div>
+                <h2>${message}</h2>
+                <p>Ton score est de :<br>
+                <b>${Score} / ${nombreDeQuestions}</b></p>
+                <div style="color: #888;">(${pourcentageTotal}%)</div>
+            `;
+            document.getElementById("nextQuestion").style.display="none";
+        }
 
-				let questionText = (questions[NQuestion]).Q;
-				let reponse1 = (questions[NQuestion]).reponse[0];
-				let reponse2 = (questions[NQuestion]).reponse[1];
-				let reponse3 = (questions[NQuestion]).reponse[2];
-				let reponse4 = (questions[NQuestion]).reponse[3];
-				
-				// On définit la bonne réponse (le 5ème élément du tableau)
-				BonneReponse = (questions[NQuestion]).reponse[4];
+        function NextQuestion() {
+            if (NQuestion == questions.length) {
+                lastQuestion();
+                return;
+            }
+            clearInterval(timerInterval);
+            tempsRestant = parseInt(questions[NQuestion].temps);
+            document.getElementById("timer").textContent = tempsRestant;
+            timerInterval = setInterval(timer, 1000);
 
-				DisplyChange();
-				
-				const Q1 = document.getElementById("Question");
-				Q1.innerHTML = `<h1>${questionText}</h1>`; // Simplifié pour ne pas tout effacer
-				
-				document.getElementById("R1").innerHTML = reponse1;
-				document.getElementById("R2").innerHTML = reponse2;
-				document.getElementById("R3").innerHTML = reponse3;
-				document.getElementById("R4").innerHTML = reponse4;
-			}
+            let questionText = (questions[NQuestion]).Q;
+            let reponse1 = (questions[NQuestion]).reponse[0];
+            let reponse2 = (questions[NQuestion]).reponse[1];
+            let reponse3 = (questions[NQuestion]).reponse[2];
+            let reponse4 = (questions[NQuestion]).reponse[3];
+            BonneReponse = (questions[NQuestion]).reponse[4];
 
-			let NQuestion = -1;
-			let GrilleQuestions = document.getElementById("grille-questions");
+            DisplyChange();
+            const Q1 = document.getElementById("Question");
+            Q1.innerHTML = `<h1>${questionText}</h1>`;
+            document.getElementById("R1").innerHTML = reponse1;
+            document.getElementById("R2").innerHTML = reponse2;
+            document.getElementById("R3").innerHTML = reponse3;
+            document.getElementById("R4").innerHTML = reponse4;
+        }
 
-			function DisplyChange(){
-				if (NQuestion >= 0){
-					GrilleQuestions.style.display = "grid";
-				}
-			}
-			
-			function resultsToQuestions(){
-				document.getElementById("resultats").style.display="none";
-				QuestionsReponses.style.display="block";
-				NextQuestion(); // On lance la question suivante ICI
-			}
-			
-			function SpaceBar(e){
-				if (e.key === " " || e.key === "Spacebar"){
-					if (NQuestion == -1){ // On ne lance que si le quiz n'a pas commencé
-						NQuestion = 0;
-						NextQuestion();
-					}
-				}
-			}
-		</script>
-	</body>
+        let NQuestion = -1;
+        let GrilleQuestions = document.getElementById("grille-questions");
+
+        function DisplyChange() {
+            if (NQuestion >= 0) {
+                GrilleQuestions.style.display = "grid";
+            }
+        }
+
+        function resultsToQuestions() {
+            document.getElementById("resultats").style.display="none";
+            QuestionsReponses.style.display="block";
+            NextQuestion();
+        }
+
+        function SpaceBar(e) {
+            if (e.key === " " || e.key === "Spacebar") {
+                if (NQuestion == -1) {
+                    NQuestion = 0;
+                    NextQuestion();
+                }
+            }
+        }
+    </script>
+</body>
 </html>
