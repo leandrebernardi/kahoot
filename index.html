@@ -73,7 +73,6 @@
             <div id="timer-container">
                 <span id="timer">15</span>s
             </div>
-            <br>
             <button id="R1" onclick="MettreRC1()"></button>
             <button id="R2" onclick="MettreRC2()"></button>
             <button id="R3" onclick="MettreRC3()"></button>
@@ -100,6 +99,7 @@
         let gagne = document.getElementById("gagne");
         let QuestionsReponses = document.getElementById("QuestionsReponses");
         let timerInterval;
+        let NQuestion = -1;
 
         function timer() {
             let timerElement = document.getElementById("timer");
@@ -107,8 +107,8 @@
             timerElement.textContent = tempsRestant;
             if (tempsRestant <= 0) {
                 clearInterval(timerInterval);
-                resultatQuestion("Temps écoulé !");
                 NQuestion += 1;
+                resultatQuestion("Temps écoulé !");
             }
         }
 
@@ -117,6 +117,11 @@
             document.getElementById("resultats").style.display="block";
             gagne.textContent = TEXT;
             QuestionsReponses.style.display="none";
+            
+            // Si on vient de répondre à la dernière question
+            if (NQuestion === questions.length) {
+                lastQuestion();
+            }
         }
 
         function MettreRC1() { RChoisie = "R1"; VerifyReponse(); }
@@ -127,13 +132,15 @@
         document.addEventListener("keydown", SpaceBar);
 
         function VerifyReponse() {
+            let feedback = "";
             if (RChoisie == BonneReponse) {
-                resultatQuestion("Bravo! C'est la bonne reponse!");
+                feedback = "Bravo! C'est la bonne reponse!";
                 Score += 1;
             } else {
-                resultatQuestion("Non. C'est la mauvaise reponse.");
+                feedback = "Non. C'est la mauvaise reponse.";
             }
             NQuestion += 1;
+            resultatQuestion(feedback);
         }
 
         function lastQuestion() {
@@ -151,10 +158,6 @@
         }
 
         function NextQuestion() {
-            if (NQuestion == questions.length) {
-                lastQuestion();
-                return;
-            }
             clearInterval(timerInterval);
             tempsRestant = parseInt(questions[NQuestion].temps);
             document.getElementById("timer").textContent = tempsRestant;
@@ -176,7 +179,6 @@
             document.getElementById("R4").innerHTML = reponse4;
         }
 
-        let NQuestion = -1;
         let GrilleQuestions = document.getElementById("grille-questions");
 
         function DisplyChange() {
